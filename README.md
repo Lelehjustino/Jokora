@@ -7,6 +7,13 @@ O **Jokora** é um aplicativo mobile Android desenvolvido em Kotlin e Jetpack Co
 
 O projeto foi desenvolvido como parte de um trabalho acadêmico, com o objetivo de aplicar conceitos de desenvolvimento mobile, arquitetura de software, navegação entre telas, gerenciamento de estado e persistência de dados.
 
+<!--## 🎮 Conheça as regras do Jokenpô Avançado
+
+Aprenda como funciona a modalidade Pedra, Papel, Tesoura, Lagarto e Spock:
+
+[![Regras do Pedra, Papel, Tesoura, Lagarto e Spock](https://img.youtube.com/vi/ID_DO_VIDEO/hqdefault.jpg)](https://www.youtube.com/watch?v=https://www.youtube.com/shorts/EHrb492R-Yk)
+
+*Clique na imagem para assistir ao vídeo.*  -->
 ## Funcionalidades
 
 - **Tela inicial:** apresenta o aplicativo e permite acessar as modalidades de jogo e demais funcionalidades.
