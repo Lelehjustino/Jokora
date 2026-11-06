@@ -1,4 +1,5 @@
 # Jokora — Jogo de Jokenpô
+<!--  **[⬇️ Download do APK]()**  -->
 
 ## Sobre o projeto
 
