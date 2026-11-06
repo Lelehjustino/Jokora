@@ -1,8 +1,8 @@
-# Jokenix — Jogo de Jokenpô
+# Jokora — Jogo de Jokenpô
 
 ## Sobre o projeto
 
-O **Jokenix** é um aplicativo mobile Android desenvolvido em Kotlin e Jetpack Compose, inspirado no clássico jogo Jokenpô. O aplicativo permite que os usuários disputem partidas contra o computador em duas modalidades: a tradicional, Pedra, Papel e Tesoura, e a avançada, Pedra, Papel, Tesoura, Lagarto e Spock.
+O **Jokora** é um aplicativo mobile Android desenvolvido em Kotlin e Jetpack Compose, inspirado no clássico jogo Jokenpô. O aplicativo permite que os usuários disputem partidas contra o computador em duas modalidades: a tradicional, Pedra, Papel e Tesoura, e a avançada, Pedra, Papel, Tesoura, Lagarto e Spock.
 
 O projeto foi desenvolvido como parte de um trabalho acadêmico, com o objetivo de aplicar conceitos de desenvolvimento mobile, arquitetura de software, navegação entre telas, gerenciamento de estado e persistência de dados.
 
@@ -17,7 +17,7 @@ O projeto foi desenvolvido como parte de um trabalho acadêmico, com o objetivo 
 
 ## Requisitos do trabalho
 
-O desenvolvimento do Jokenix contempla os seguintes requisitos:
+O desenvolvimento do Jokora contempla os seguintes requisitos:
 
 - Aplicativo Android desenvolvido com Kotlin e Jetpack Compose.
 - Arquitetura MVVM, separando interface, lógica de negócio e acesso aos dados.
@@ -56,7 +56,7 @@ O desenvolvimento do Jokenix contempla os seguintes requisitos:
 O projeto está organizado de forma a separar as responsabilidades de cada camada:
 
 ```text
-com.example.jokenix/
+com.example.Jokora/
 │
 ├── data/
 │   ├── database/
@@ -118,4 +118,4 @@ A estrutura de dados, a arquitetura e a navegação foram organizadas para permi
 
 ## Objetivo acadêmico
 
-O Jokenix tem como objetivo demonstrar, na prática, a aplicação dos conceitos estudados durante a disciplina, especialmente arquitetura MVVM, desenvolvimento de interfaces Android, persistência de dados, navegação, gerenciamento de estado e organização de código em camadas.
+O Jokora tem como objetivo demonstrar, na prática, a aplicação dos conceitos estudados durante a disciplina, especialmente arquitetura MVVM, desenvolvimento de interfaces Android, persistência de dados, navegação, gerenciamento de estado e organização de código em camadas.
