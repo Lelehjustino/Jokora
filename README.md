@@ -13,7 +13,7 @@ Aprenda como funciona a modalidade Pedra, Papel, Tesoura, Lagarto e Spock:
 
 [![Regras do Pedra, Papel, Tesoura, Lagarto e Spock](https://drive.google.com/thumbnail?id=1odUV1OGS0oHbzoLx6A7Pgwwlhe8JTKSx&sz=w1000)](https://www.youtube.com/watch?v=smY7u7hwJPk)
 
-*Clique na imagem para assistir ao vídeo no YouTube.*>
+*Clique na imagem para assistir ao vídeo no YouTube.*
 
 ## Funcionalidades
 
@@ -65,7 +65,7 @@ O desenvolvimento do Jokora contempla os seguintes requisitos:
 O projeto está organizado de forma a separar as responsabilidades de cada camada:
 
 ```text
-com.example.Jokora/
+com.example.jokora/
 │
 ├── data/
 │   ├── database/
