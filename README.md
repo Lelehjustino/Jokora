@@ -5,8 +5,6 @@
 
 O **Jokora** é um aplicativo mobile Android desenvolvido em Kotlin e Jetpack Compose, inspirado no clássico jogo Jokenpô. O aplicativo permite que os usuários disputem partidas contra o computador em duas modalidades: a tradicional, Pedra, Papel e Tesoura, e a avançada, Pedra, Papel, Tesoura, Lagarto e Spock.
 
-O projeto foi desenvolvido como parte de um trabalho acadêmico, com o objetivo de aplicar conceitos de desenvolvimento mobile, arquitetura de software, navegação entre telas, gerenciamento de estado e persistência de dados.
-
 ## Demonstração
 
 [Assistir à demonstração do aplicativo](https://drive.google.com/file/d/1fDLQOPZg7RlTZL6yUWSzZ10BDkJjnJOl/view?usp=drive_link)
@@ -28,9 +26,9 @@ Aprenda como funciona a modalidade Pedra, Papel, Tesoura, Lagarto e Spock:
 - **Jokenpô avançado:** adiciona as opções Lagarto e Spock à dinâmica tradicional.
 - **Regras:** apresenta as regras e combinações vencedoras de cada modalidade.
 - **Histórico:** permite consultar as partidas realizadas e seus resultados.
-- **Área administrativa:** disponibiliza funcionalidades restritas aos usuários com perfil de administrador.
+- **Perfil:** disponibiliza funcionalidades com perfil.
 
-## Requisitos do trabalho
+## Requisitos do projeto
 
 O desenvolvimento do Jokora contempla os seguintes requisitos:
 
@@ -53,7 +51,7 @@ O desenvolvimento do Jokora contempla os seguintes requisitos:
 | TelaJokenpo | Partida na modalidade tradicional. |
 | TelaJokenpoAvancado | Partida na modalidade avançada. |
 | TelaHistorico | Consulta das partidas realizadas. |
-| TelaAdmin | Área de acesso restrito ao administrador. |
+| TelaPeril | Área de acesso restrito ao jogador. |
 
 ## Tecnologias utilizadas
 
@@ -111,6 +109,18 @@ A camada de persistência é organizada por meio de:
 - **DAOs:** definem as operações de consulta, inserção, atualização e exclusão.
 - **Repositories:** intermediam o acesso aos dados e disponibilizam as operações para os ViewModels.
 - **Database:** configura e disponibiliza a instância do banco de dados.
+
+## Acesso ao aplicativo
+
+O Jokora foi desenvolvido para oferecer liberdade ao jogador. Por isso, não é obrigatório realizar login para jogar!
+
+Ao abrir o aplicativo, o jogador pode escolher entre duas possibilidades:
+
+Jogar sem login: permite acessar as modalidades de Jokenpô e aproveitar o jogo sem precisar informar seus dados.
+
+Entrar com nome de jogador: permite realizar um login simples, informando apenas um nome de jogador para utilizar as funcionalidades associadas ao perfil.
+
+Essa escolha é totalmente opcional. A ideia é proporcionar uma experiência simples e acessível, permitindo que cada pessoa jogue da maneira que preferir.
 
 ## Como executar o projeto
 
