@@ -7,6 +7,12 @@ O **Jokora** é um aplicativo mobile Android desenvolvido em Kotlin e Jetpack Co
 
 O projeto foi desenvolvido como parte de um trabalho acadêmico, com o objetivo de aplicar conceitos de desenvolvimento mobile, arquitetura de software, navegação entre telas, gerenciamento de estado e persistência de dados.
 
+## Demonstração
+
+[Assistir à demonstração do aplicativo](https://drive.google.com/file/d/1fDLQOPZg7RlTZL6yUWSzZ10BDkJjnJOl/view?usp=drive_link)
+
+A demonstração apresenta o aplicativo e suas funcionalidades. 
+
 ## 🎮 Conheça as regras do Jokenpô Avançado
 
 Aprenda como funciona a modalidade Pedra, Papel, Tesoura, Lagarto e Spock:
@@ -118,6 +124,16 @@ git clone URL_DO_REPOSITORIO
 3. Aguarde a sincronização das dependências do Gradle.
 4. Selecione um emulador Android ou conecte um dispositivo físico.
 5. Execute o aplicativo pelo botão **Run**.
+
+## Problemas com commit 
+
+Durante o desenvolvimento do trabalho, ocorreu um problema no histórico do Git: um dos commits acabou sobrescrevendo alterações que haviam sido realizadas anteriormente por outros integrantes do grupo.
+
+Apesar desse problema, todos os membros participaram ativamente do desenvolvimento e realizaram seus próprios commits. Temos os registros no histórico do repositório que comprovam a participação individual de cada integrante.
+
+É importante ressaltar que todos os membros contribuíram para o projeto e realizaram commits. O problema ocorrido foi relacionado à integração e à preservação das alterações no repositório, e não à falta de participação de algum integrante.
+
+[Registros que todos os membros commitaram](https://drive.google.com/drive/folders/198Opoppmu5f8oCCk06LRNScipgnI-oGs?usp=sharing)
 
 ## Equipe e desenvolvimento
 
