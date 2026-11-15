@@ -50,7 +50,6 @@ O desenvolvimento do Jokora contempla os seguintes requisitos:
 | TelaRegras | Explicação das regras das duas modalidades. |
 | TelaJokenpo | Partida na modalidade tradicional. |
 | TelaJokenpoAvancado | Partida na modalidade avançada. |
-| TelaHistorico | Consulta das partidas realizadas. |
 | TelaPeril | Área de acesso restrito ao jogador. |
 
 ## Tecnologias utilizadas
