@@ -7,7 +7,6 @@ import com.example.jokora.data.repository.PartidaRepository
 
 /**
  * Ponto único de criação do banco e dos repositories (singletons).
- * ViewModels recebem os repositories por construtor — nunca o banco ou os DAOs.
  */
 object DatabaseProvider {
 

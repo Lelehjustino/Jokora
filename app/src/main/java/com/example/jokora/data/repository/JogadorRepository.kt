@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 
-/** Erros de domínio que a UI pode mostrar ao usuário (message em português). */
+/** Erros de domínio que a UI pode mostrar ao usuário*/
 sealed class JokenpoException(mensagem: String, causa: Throwable? = null) : Exception(mensagem, causa) {
     class NomeInvalido : JokenpoException("Informe um nome com pelo menos 2 caracteres.")
     class JogadorJaExiste(nome: String) : JokenpoException("Já existe um jogador chamado \"$nome\".")

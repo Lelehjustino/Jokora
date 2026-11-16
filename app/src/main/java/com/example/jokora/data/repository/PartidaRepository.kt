@@ -23,10 +23,6 @@ data class Placar(
 class PartidaRepository(private val dao: PartidaDao) {
 
     // ---------- Regras + persistência ----------
-    /**
-     * Joga uma rodada contra o computador: sorteia a jogada do oponente,
-     * calcula o resultado e grava a partida. Usado pelas duas modalidades.
-     */
     suspend fun jogarContraComputador(
         jogadorId: Long,
         modalidade: Modalidade,

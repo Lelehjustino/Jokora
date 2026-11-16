@@ -1,8 +1,6 @@
 package com.example.jokora.model
 
 /**
- * Jogadas possíveis. As três primeiras formam o Jokenpô tradicional;
- * LAGARTO e SPOCK completam a modalidade avançada.
  * As regras de vitória ficam aqui para que as duas modalidades compartilhem a mesma lógica.
  */
 enum class Jogada(val rotulo: String) {
