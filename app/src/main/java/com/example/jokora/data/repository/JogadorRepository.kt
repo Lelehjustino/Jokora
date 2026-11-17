@@ -20,6 +20,10 @@ sealed class JokenpoException(mensagem: String, causa: Throwable? = null) : Exce
     class JogadorNaoEncontrado(id: Long) : JokenpoException("Jogador $id não encontrado.")
     class JogadaInvalida(mensagem: String) : JokenpoException(mensagem)
     class ErroBanco(causa: Throwable) : JokenpoException("Falha ao acessar o banco de dados.", causa)
+    class SenhaInvalida : JokenpoException("Senha de administrador incorreta.")
+    class NomeReservado : JokenpoException("Este nome é reservado. Use o login de administrador.")
+    class SemConexao(causa: Throwable) : JokenpoException("Sem conexão com a internet.", causa)
+    class ErroApi(causa: Throwable) : JokenpoException("Não foi possível carregar a frase do dia.", causa)
 }
 
 /** Executa [bloco] convertendo exceções em Result.failure, sem engolir cancelamento de coroutine. */
@@ -89,9 +93,35 @@ class JogadorRepository(private val dao: JogadorDao) {
     suspend fun entrarOuRegistrar(nome: String): Result<JogadorEntity> =
         executarComSeguranca(TAG) {
             val nomeLimpo = validarNome(nome)
+            // O administrador só entra pelo login com senha (entrarComoAdmin).
+            if (nomeLimpo.equals(NOME_ADMIN, ignoreCase = true)) throw JokenpoException.NomeReservado()
             dao.buscarPorNome(nomeLimpo)
                 ?: registrarJogador(nomeLimpo).getOrThrow()
         }.onSuccess { selecionarJogador(it) }
+
+    /**
+     * Login simulado do administrador: confere a senha e entra com o perfil ADMIN.
+     * Na primeira vez, o usuário administrador é criado no banco.
+     */
+    suspend fun entrarComoAdmin(senha: String): Result<JogadorEntity> =
+        executarComSeguranca(TAG) {
+            if (senha != SENHA_ADMIN) throw JokenpoException.SenhaInvalida()
+            val existente = dao.buscarPorNome(NOME_ADMIN)
+            when {
+                existente == null -> registrarJogador(NOME_ADMIN, Perfil.ADMIN).getOrThrow()
+                existente.perfil != Perfil.ADMIN -> existente.copy(perfil = Perfil.ADMIN)
+                    .also { atualizarJogador(it).getOrThrow() }
+                else -> existente
+            }
+        }.onSuccess { selecionarJogador(it) }
+
+    /** Update do CRUD: troca o nome de um jogador (usado na TelaAdmin). */
+    suspend fun renomearJogador(jogadorId: Long, novoNome: String): Result<Unit> =
+        executarComSeguranca(TAG) {
+            val jogador = dao.buscarPorId(jogadorId) ?: throw JokenpoException.JogadorNaoEncontrado(jogadorId)
+            if (novoNome.trim().equals(NOME_ADMIN, ignoreCase = true)) throw JokenpoException.NomeReservado()
+            atualizarJogador(jogador.copy(nome = novoNome)).getOrThrow()
+        }
 
     suspend fun buscarPorId(id: Long): Result<JogadorEntity> =
         executarComSeguranca(TAG) {
@@ -128,5 +158,11 @@ class JogadorRepository(private val dao: JogadorDao) {
         return limpo
     }
 
-    private companion object { const val TAG = "JogadorRepository" }
+    companion object {
+        private const val TAG = "JogadorRepository"
+
+        /** Usuário e senha do login simulado de administrador. */
+        const val NOME_ADMIN = "Administrador"
+        const val SENHA_ADMIN = "admin123"
+    }
 }
