@@ -1,0 +1,23 @@
+package com.example.jokora.viewmodel
+
+import android.content.Context
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.jokora.data.database.DatabaseProvider
+
+/** Cria o SessaoViewModel entregando o JogadorRepository. */
+class SessaoViewModelFactory(
+    context: Context
+) : ViewModelProvider.Factory {
+
+    private val jogadorRepository =
+        DatabaseProvider.jogadorRepository(context.applicationContext)
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(SessaoViewModel::class.java)) {
+            return SessaoViewModel(jogadorRepository) as T
+        }
+        throw IllegalArgumentException("ViewModel desconhecido: ${modelClass.name}")
+    }
+}

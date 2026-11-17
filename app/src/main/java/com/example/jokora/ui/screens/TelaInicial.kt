@@ -8,15 +8,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -107,6 +110,16 @@ fun TelaInicial(
 
                     }
                 }
+            }
+
+            // Frase do dia: vem da API externa (Retrofit) pelo TelaInicialViewModel
+            item {
+                FraseDoDia(
+                    frase = uiState.frase,
+                    carregando = uiState.carregandoFrase,
+                    erro = uiState.erroFrase,
+                    onNovaFrase = { viewModel.carregarFrase() }
+                )
             }
 
             item {
@@ -212,10 +225,25 @@ fun TelaInicial(
 
             item {
                 OutlinedButton(
-                    onClick = { nav.navegar(Rota.Historico) },
+                    onClick = { nav.navegar(Rota.Perfil) },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("👤  Meu perfil")
+                }
+            }
+
+            // Controle de perfil: o botão só existe para o administrador
+            if (uiState.isAdmin) {
+                item {
+                    Button(
+                        onClick = { nav.navegar(Rota.Admin) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.tertiary
+                        )
+                    ) {
+                        Text("⚙️  Área administrativa")
+                    }
                 }
             }
 
@@ -230,6 +258,54 @@ fun TelaInicial(
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
+            }
+        }
+    }
+}
+
+/** Cartão com a frase do dia buscada na API (com estados de carregando e erro). */
+@Composable
+private fun FraseDoDia(
+    frase: String?,
+    carregando: Boolean,
+    erro: String?,
+    onNovaFrase: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "💡 Conselho do dia",
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            when {
+                carregando -> CircularProgressIndicator(modifier = Modifier.size(28.dp))
+                erro != null -> Text(
+                    text = erro,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Center
+                )
+                frase != null -> Text(
+                    text = "\"$frase\"",
+                    textAlign = TextAlign.Center,
+                    fontSize = 15.sp
+                )
+            }
+
+            TextButton(onClick = onNovaFrase, enabled = !carregando) {
+                Text(if (erro != null) "Tentar novamente" else "Nova frase")
             }
         }
     }

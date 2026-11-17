@@ -63,6 +63,10 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
+    // Retrofit (API externa)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+
     // Testes
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

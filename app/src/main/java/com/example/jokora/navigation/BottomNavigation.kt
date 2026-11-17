@@ -3,9 +3,9 @@ package com.example.jokora.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -19,16 +19,20 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
-/** Barra de navegação inferior padrão (Material 3), sem estilização própria. */
+/**
+ * Barra de navegação inferior padrão (Material 3).
+ * [abas] vem do SessaoViewModel: a aba Admin só está na lista para o perfil ADMIN.
+ */
 @Composable
 fun BarraNavegacaoInferior(
-    navController: NavHostController
+    navController: NavHostController,
+    abas: List<Rota>
 ) {
     val entradaAtual by navController.currentBackStackEntryAsState()
     val destinoAtual = entradaAtual?.destination
 
     NavigationBar {
-        Rota.itensBarraInferior().forEach { rota ->
+        abas.forEach { rota ->
             NavigationBarItem(
                 selected = destinoAtual?.hierarchy?.any { it.route == rota.route } == true,
                 onClick = { navController.navegarPelaBarra(rota) },
@@ -44,7 +48,8 @@ private fun iconeDa(rota: Rota): ImageVector = when (rota) {
     Rota.Regras -> Icons.Filled.Info
     Rota.Jokenpo -> Icons.Filled.PlayArrow
     Rota.JokenpoAvancado -> Icons.Filled.Star
-    Rota.Historico -> Icons.Filled.Person
+    Rota.Perfil -> Icons.Filled.Person
+    Rota.Admin -> Icons.Filled.Settings
 }
 
 /** Navegação de abas: não empilha telas repetidas e preserva o estado de cada aba. */
