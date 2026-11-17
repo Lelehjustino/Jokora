@@ -27,6 +27,7 @@ Aprenda como funciona a modalidade Pedra, Papel, Tesoura, Lagarto e Spock:
 - **Regras:** apresenta as regras e combinações vencedoras de cada modalidade.
 - **Histórico:** permite consultar as partidas realizadas e seus resultados.
 - **Perfil:** disponibiliza funcionalidades com perfil.
+- **Admin:** disponibiliza funcionalidades com admin.
 
 ## Requisitos do projeto
 
@@ -46,6 +47,7 @@ O desenvolvimento do Jokora contempla os seguintes requisitos:
 
 | Tela | Descrição |
 |---|---|
+| TelaAdmin | Área de acesso restrito ao admin. |
 | TelaInicial | Página principal e acesso às funcionalidades. |
 | TelaRegras | Explicação das regras das duas modalidades. |
 | TelaJokenpo | Partida na modalidade tradicional. |
