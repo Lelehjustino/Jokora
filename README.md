@@ -1,5 +1,5 @@
 # Jokora — Jogo de Jokenpô
-**[⬇️ Download do APK](https://drive.google.com/file/d/1VDlnUpbKmRhYHe8Qcaqo8Tam58CWVUDo/view?usp=sharing)**
+**[⬇️ Download do APK](https://docs.google.com/presentation/d/112xm-tX4YkOGu8htwQC70V0wNG7goZFpfFkYDhblOV8/edit?hl=pt-br&slide=id.h731fe62023cdc156_0_2#slide=id.h731fe62023cdc156_0_2)**
 
 ## Sobre o projeto
 
@@ -7,7 +7,7 @@ O **Jokora** é um aplicativo mobile Android desenvolvido em Kotlin e Jetpack Co
 
 ## Demonstração
 
-[Assistir à demonstração do aplicativo](https://drive.google.com/file/d/1fDLQOPZg7RlTZL6yUWSzZ10BDkJjnJOl/view?usp=drive_link)
+[Assistir à demonstração do aplicativo](https://docs.google.com/presentation/d/112xm-tX4YkOGu8htwQC70V0wNG7goZFpfFkYDhblOV8/edit?hl=pt-br&slide=id.h731fe62023cdc156_0_9#slide=id.h731fe62023cdc156_0_9)
 
 A demonstração apresenta o aplicativo e suas funcionalidades. 
 
