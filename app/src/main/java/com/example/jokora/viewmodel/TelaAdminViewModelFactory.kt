@@ -1,0 +1,26 @@
+package com.example.jokora.viewmodel
+
+import android.content.Context
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.jokora.data.database.DatabaseProvider
+
+/** Cria o TelaAdminViewModel entregando os Repositories que ele precisa. */
+class TelaAdminViewModelFactory(
+    context: Context
+) : ViewModelProvider.Factory {
+
+    private val jogadorRepository =
+        DatabaseProvider.jogadorRepository(context.applicationContext)
+
+    private val partidaRepository =
+        DatabaseProvider.partidaRepository(context.applicationContext)
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(TelaAdminViewModel::class.java)) {
+            return TelaAdminViewModel(jogadorRepository, partidaRepository) as T
+        }
+        throw IllegalArgumentException("ViewModel desconhecido: ${modelClass.name}")
+    }
+}
