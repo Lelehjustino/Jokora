@@ -7,8 +7,9 @@ ViewModels recebem **apenas Repositories**. Nunca use `JokenpoDatabase` ou DAOs 
 
 1. Clone o repositório (ou descompacte o zip) em `AndroidStudioProjects`.
 2. Android Studio > **File > Open** > pasta `Jokora` > aguarde o **Gradle Sync**.
-3. **Build > Rebuild Project** e rode no emulador. O app abre no Início com
-   "tela ainda não integrada" e a barra inferior com 5 abas.
+3. **Build > Rebuild Project** e rode no emulador. O app abre no Início (com o
+   "Conselho do dia" vindo da API) e a barra inferior com 5 abas. A 6ª aba, **Admin**,
+   só aparece depois do login de administrador.
 
 ```
 app/src/main/java/com/example/jokora/
@@ -17,14 +18,15 @@ app/src/main/java/com/example/jokora/
 │   ├── database/  JokenpoDatabase.kt (+ JokenpoConverters) · DatabaseProvider.kt
 │   ├── dao/       JogadorDao.kt · PartidaDao.kt
 │   ├── entity/    JogadorEntity.kt (+ JogadorComPartidas) · PartidaEntity.kt
-│   └── repository/ JogadorRepository.kt (+ JokenpoException) · PartidaRepository.kt (+ Placar)
+│   ├── remote/    ConselhoApi.kt · RetrofitClient.kt   (API externa via Retrofit)
+│   └── repository/ JogadorRepository.kt (+ JokenpoException) · PartidaRepository.kt (+ Placar) · FraseRepository.kt
 ├── model/         Jogada.kt · Resultado.kt · Modalidade.kt · Perfil.kt   PRONTO
 ├── navigation/    NavGraph.kt · Rotas.kt · BottomNavigation.kt          PRONTO
 ├── ui/
-│   ├── screens/     ← TelaInicial.kt, TelaRegras.kt, TelaJokenpo.kt, TelaJokenpoAvancado.kt…
+│   ├── screens/     TelaInicial.kt · TelaRegras.kt · TelaJokenPo.kt · TelaJokenPoAva.kt · TelaPerfil.kt · TelaAdmin.kt
 │   ├── components/  ← componentes visuais reutilizáveis (botões, cards…)
 │   └── theme/       Theme.kt (Material 3 padrão — o grupo define a identidade visual)
-└── viewmodel/       ← JokenpoViewModel.kt, HistoricoViewModel.kt… + seus UiStates
+└── viewmodel/       um ViewModel (+ Factory e UiState) por tela · SessaoViewModel.kt (controle de perfil)
 ```
 
 Os arquivos `.gitkeep` só existem para as pastas vazias irem para o Git; podem apagar
@@ -51,8 +53,10 @@ val jokenpo: @Composable (AcoesNavegacao) -> Unit = { nav -> TelaJokenpo(nav) },
 | 2 | TelaRegras | `regras` | `Rota.Regras` |
 | 3 | TelaJokenpo | `jokenpo` | `Rota.Jokenpo` |
 | 4 | TelaJokenpoAvancado | `jokenpoAvancado` | `Rota.JokenpoAvancado` |
-| a definir | TelaHistorico | `historico` | `Rota.Historico` |
-| a definir | TelaAdmin | `admin` | `Rota.Admin` (só perfil ADMIN) |
+| — | TelaPerfil | `perfil` | `Rota.Perfil` (perfil, login admin e histórico de partidas) |
+| — | TelaAdmin | `admin` | `Rota.Admin` (só perfil ADMIN) |
+
+> A antiga TelaHistorico foi removida: o histórico de partidas agora fica na **TelaPerfil**.
 
 Cada uma mexe em uma linha diferente do NavGraph, então não há conflito no Git.
 
@@ -127,14 +131,14 @@ val estado by vm.uiState.collectAsStateWithLifecycle()
 
 ## 4. Requisitos do README que ficam nas telas/ViewModels
 
-**LazyColumn** — TelaHistorico:
+**LazyColumn** — histórico de partidas na TelaPerfil e ranking na TelaAdmin:
 ```kotlin
 LazyColumn {
     items(estado.partidas, key = { it.id }) { partida -> /* item visual */ }
 }
 ```
 
-**map, filter e sortedBy com lambdas** — no HistoricoViewModel, por exemplo:
+**map, filter e sortedBy com lambdas** — no TelaPerfilViewModel e no TelaAdminViewModel. Exemplo:
 ```kotlin
 val partidas: StateFlow<List<PartidaEntity>> =
     partidaRepository.historicoDoJogador(jogadorId)
@@ -149,14 +153,20 @@ val linhas = partidas.value.map { "${it.jogadaJogador.rotulo} x ${it.jogadaOpone
 Ranking na TelaAdmin: `listarJogadoresComPartidas()` +
 `sortedByDescending { j -> j.partidas.count { it.resultado == Resultado.VITORIA } }`.
 
-**Controle de acesso por perfil** — já pronto: o item Admin só aparece para `Perfil.ADMIN`
-e a rota redireciona para o Início se alguém sem permissão tentar abrir.
+**Controle de acesso por perfil** — já pronto: o `SessaoViewModel` decide as abas visíveis,
+o item Admin só aparece para `Perfil.ADMIN` e a rota redireciona para o Perfil se alguém
+sem permissão tentar abrir.
+
+**API externa (Retrofit)** — já pronto: a TelaInicial mostra o "Conselho do dia" da API
+pública Advice Slip (`FraseRepository` → `ConselhoApi`). Falhas de rede chegam como
+`JokenpoException.SemConexao` / `ErroApi`.
 
 ## 5. O que a infraestrutura já oferece
 
 **JogadorRepository**
 - `jogadorAtual: StateFlow<JogadorEntity?>`, `selecionarJogador()`, `sair()` — sessão do app
-- `entrarOuRegistrar(nome)` — ideal para a TelaInicial
+- `entrarOuRegistrar(nome)` — ideal para a TelaInicial (o nome "Administrador" é reservado)
+- `entrarComoAdmin(senha)` — login simulado do administrador; `renomearJogador(id, nome)` — usado na TelaAdmin
 - `registrarJogador(nome, perfil)`, `atualizarJogador()`, `alterarPerfil()`, `excluirJogador()`
 - `listarJogadores()`, `observarJogador(id)`, `listarJogadoresComPartidas()`, `observarJogadorComPartidas(id)` — `Flow`
 
@@ -173,9 +183,9 @@ Escritas devolvem `Result<T>`; erros chegam como `JokenpoException` com mensagem
 
 ## 6. Decisões para o grupo
 
-- **Primeiro administrador**: definam como é criado (ex.: na TelaInicial, um nome reservado
-  chama `registrarJogador(nome, Perfil.ADMIN)`).
-- **TelaHistorico e TelaAdmin**: definam quem desenvolve.
+- **Administrador**: já definido — na TelaPerfil, botão "Sou administrador" e senha de
+  demonstração `admin123` (`JogadorRepository.SENHA_ADMIN`). O usuário "Administrador"
+  é criado no primeiro login.
 - Ao alterar qualquer Entity, subam `version` em `JokenpoDatabase` (o banco é recriado).
 
 ## 7. Checklist antes de entregar
