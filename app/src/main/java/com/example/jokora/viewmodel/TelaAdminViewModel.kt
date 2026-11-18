@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-/** Uma linha do ranking de jogadores da área administrativa. */
 data class JogadorResumo(
     val id: Long,
     val nome: String,
@@ -32,10 +31,6 @@ data class TelaAdminUiState(
     val erro: String? = null
 )
 
-/**
- * Área administrativa: ranking de jogadores + Update (renomear) e Delete (excluir) do CRUD.
- * Create = criar perfil/registrar partida; Read = listas vindas do Room via Flow.
- */
 class TelaAdminViewModel(
     private val jogadorRepository: JogadorRepository,
     private val partidaRepository: PartidaRepository
@@ -45,12 +40,6 @@ class TelaAdminViewModel(
     private val mensagem = MutableStateFlow<String?>(null)
     private val erro = MutableStateFlow<String?>(null)
 
-    /**
-     * Ranking reativo: o Room emite a lista sempre que algo muda.
-     * filter  -> só perfis de jogador (o administrador não entra no ranking)
-     * map     -> converte JogadorComPartidas em JogadorResumo (contando vitórias)
-     * sortedByDescending -> quem mais venceu primeiro
-     */
     private val ranking: Flow<List<JogadorResumo>> =
         jogadorRepository.listarJogadoresComPartidas().map { lista ->
             lista
@@ -69,7 +58,6 @@ class TelaAdminViewModel(
     val uiState: StateFlow<TelaAdminUiState> = combine(
         jogadorRepository.jogadorAtual, ranking, busca, mensagem, erro
     ) { jogador, listaCompleta, termo, mensagemAtual, erroAtual ->
-        // Filtro da busca por nome (também no ViewModel)
         val filtrada = if (termo.isBlank()) {
             listaCompleta
         } else {
@@ -94,7 +82,6 @@ class TelaAdminViewModel(
         busca.value = texto
     }
 
-    /** Update do CRUD. */
     fun renomearJogador(jogadorId: Long, novoNome: String) {
         viewModelScope.launch {
             jogadorRepository.renomearJogador(jogadorId, novoNome)
@@ -103,7 +90,6 @@ class TelaAdminViewModel(
         }
     }
 
-    /** Delete do CRUD (as partidas do jogador são apagadas junto, por CASCADE). */
     fun excluirJogador(jogadorId: Long) {
         viewModelScope.launch {
             jogadorRepository.excluirJogador(jogadorId)
@@ -112,7 +98,6 @@ class TelaAdminViewModel(
         }
     }
 
-    /** Apaga só o histórico de partidas de um jogador, mantendo o cadastro. */
     fun zerarHistorico(jogadorId: Long) {
         viewModelScope.launch {
             partidaRepository.limparHistoricoDoJogador(jogadorId)

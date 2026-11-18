@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
-/** Placar consolidado de um jogador (pronto para a UI exibir). */
 data class Placar(
     val vitorias: Int = 0,
     val derrotas: Int = 0,
@@ -22,7 +21,6 @@ data class Placar(
 
 class PartidaRepository(private val dao: PartidaDao) {
 
-    // ---------- Regras + persistência ----------
     suspend fun jogarContraComputador(
         jogadorId: Long,
         modalidade: Modalidade,
@@ -30,7 +28,6 @@ class PartidaRepository(private val dao: PartidaDao) {
     ): Result<PartidaEntity> =
         registrarPartida(jogadorId, modalidade, jogada, modalidade.jogadaAleatoria())
 
-    /** Registra uma partida já decidida (ex.: dois jogadores no mesmo aparelho). */
     suspend fun registrarPartida(
         jogadorId: Long,
         modalidade: Modalidade,
@@ -52,7 +49,6 @@ class PartidaRepository(private val dao: PartidaDao) {
         partida.copy(id = dao.inserir(partida))
     }
 
-    // ---------- Histórico (Flow) ----------
     fun historicoGeral(): Flow<List<PartidaEntity>> =
         dao.listarTodas().catch { e ->
             Log.e(TAG, "Erro ao carregar histórico", e)
@@ -71,7 +67,6 @@ class PartidaRepository(private val dao: PartidaDao) {
             emit(emptyList())
         }
 
-    /** Placar do jogador; passe [modalidade] para filtrar, ou null para as duas. */
     fun placar(jogadorId: Long, modalidade: Modalidade? = null): Flow<Placar> {
         val origem = if (modalidade == null) historicoDoJogador(jogadorId)
         else historicoDoJogador(jogadorId, modalidade)
@@ -84,7 +79,6 @@ class PartidaRepository(private val dao: PartidaDao) {
         }
     }
 
-    // ---------- Manutenção (área admin) ----------
     suspend fun excluirPartida(partida: PartidaEntity): Result<Unit> =
         executarComSeguranca(TAG) { dao.excluir(partida); Unit }
 

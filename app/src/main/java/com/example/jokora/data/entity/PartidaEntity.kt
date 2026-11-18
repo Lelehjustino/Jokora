@@ -15,7 +15,7 @@ import com.example.jokora.model.Resultado
             entity = JogadorEntity::class,
             parentColumns = ["id"],
             childColumns = ["jogadorId"],
-            onDelete = ForeignKey.CASCADE // apagar o jogador apaga o histórico dele
+            onDelete = ForeignKey.CASCADE
         )
     ],
     indices = [Index("jogadorId")]

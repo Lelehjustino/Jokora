@@ -1,10 +1,8 @@
 package com.example.jokora.navigation
 
-/** Rotas nomeadas do app. Use sempre estas constantes — nunca strings soltas. */
 sealed class Rota(
     val route: String,
     val titulo: String,
-    /** true = só aparece/abre para o perfil ADMIN (decidido no SessaoViewModel). */
     val apenasAdmin: Boolean = false
 ) {
     object Inicial : Rota("tela_inicial", "Início")

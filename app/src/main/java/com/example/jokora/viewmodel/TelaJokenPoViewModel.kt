@@ -13,30 +13,20 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-/**
- * Tudo o que a TelaJokenPo precisa mostrar.
- * A tela só lê este estado; quem altera é o ViewModel.
- */
 data class TelaJokenPoUiState(
-    val opcoes: List<Jogada> = Modalidade.TRADICIONAL.jogadas, // Pedra, Papel e Tesoura
+    val opcoes: List<Jogada> = Modalidade.TRADICIONAL.jogadas,
     val jogadaJogador: Jogada? = null,
     val jogadaComputador: Jogada? = null,
     val resultado: Resultado? = null,
-    val descricao: String = "",          // ex.: "Pedra quebra Tesoura"
+    val descricao: String = "",
     val vitoriasJogador: Int = 0,
     val vitoriasComputador: Int = 0,
     val empates: Int = 0,
     val erro: String? = null
 ) {
-    /** true enquanto o resultado de uma rodada está na tela. */
     val rodadaFinalizada: Boolean get() = resultado != null
 }
 
-/**
- * Regras de negócio do Jokenpô tradicional:
- * recebe a escolha do jogador, sorteia a do computador, compara,
- * atualiza o placar e manda o Repository gravar a partida no Room.
- */
 class TelaJokenPoViewModel(
     private val partidaRepository: PartidaRepository,
     private val jogadorRepository: JogadorRepository
@@ -47,14 +37,11 @@ class TelaJokenPoViewModel(
     private val _uiState = MutableStateFlow(TelaJokenPoUiState())
     val uiState: StateFlow<TelaJokenPoUiState> = _uiState.asStateFlow()
 
-    /** 1. O jogador escolhe → 2. o ViewModel recebe a escolha. */
     fun jogar(jogada: Jogada) {
-        if (_uiState.value.rodadaFinalizada) return // precisa clicar em "Jogar novamente"
+        if (_uiState.value.rodadaFinalizada) return
 
-        // 3. O computador faz uma escolha aleatória
         val computador = modalidade.jogadaAleatoria()
 
-        // 4. O sistema compara as duas jogadas
         val resultado = Resultado.calcular(jogada, computador, modalidade)
 
         val descricao = when (resultado) {
@@ -63,7 +50,6 @@ class TelaJokenPoViewModel(
             Resultado.EMPATE -> "Os dois escolheram ${jogada.rotulo}"
         } ?: ""
 
-        // 5. O resultado aparece na tela e 6. a pontuação é atualizada
         _uiState.update { estado ->
             estado.copy(
                 jogadaJogador = jogada,
@@ -77,11 +63,9 @@ class TelaJokenPoViewModel(
             )
         }
 
-        // 7. A partida é registrada no banco Room
         salvarPartida(jogada, computador)
     }
 
-    /** Limpa a rodada atual, mantendo o placar. */
     fun jogarNovamente() {
         _uiState.update { estado ->
             estado.copy(
@@ -94,15 +78,12 @@ class TelaJokenPoViewModel(
         }
     }
 
-    /** Zera o placar da tela. O histórico salvo no banco não é apagado. */
     fun reiniciarPontuacao() {
         _uiState.value = TelaJokenPoUiState()
     }
 
     private fun salvarPartida(jogada: Jogada, computador: Jogada) {
         viewModelScope.launch {
-            // Toda partida precisa de um jogador (chave estrangeira no Room).
-            // Se ninguém entrou pela Tela Inicial, usa o jogador "Visitante".
             val jogador = jogadorRepository.jogadorAtual.value
                 ?: jogadorRepository.entrarOuRegistrar(NOME_VISITANTE).getOrElse { erro ->
                     _uiState.update { it.copy(erro = erro.message) }

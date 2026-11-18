@@ -24,7 +24,6 @@ data class TelaPerfilUiState(
     val nome: String = "",
     val tipoPerfil: String = "",
     val isAdmin: Boolean = false,
-    /** true = estatísticas só do modo avançado (botão de estrela). */
     val apenasAvancado: Boolean = false,
     val placar: Placar = Placar(),
     val partidas: List<PartidaEntity> = emptyList(),
@@ -39,7 +38,6 @@ class TelaPerfilViewModel(
     private val mensagem = MutableStateFlow<String?>(null)
     private val apenasAvancado = MutableStateFlow(false)
 
-    /** Partidas do jogador logado (Room via Flow); troca sozinho quando o perfil muda. */
     @OptIn(ExperimentalCoroutinesApi::class)
     private val partidas: Flow<List<PartidaEntity>> =
         jogadorRepository.jogadorAtual.flatMapLatest { jogador ->
@@ -51,7 +49,6 @@ class TelaPerfilViewModel(
         jogadorRepository.jogadorAtual, partidas, apenasAvancado, mensagem
     ) { jogador, todasPartidas, soAvancado, mensagemAtual ->
 
-        // Lógica de lista no ViewModel: filter (modalidade) + sortedByDescending (mais recentes primeiro)
         val partidasDoPlacar = if (soAvancado) {
             todasPartidas.filter { it.modalidade == Modalidade.AVANCADO }
         } else {
@@ -78,7 +75,6 @@ class TelaPerfilViewModel(
         initialValue = TelaPerfilUiState()
     )
 
-    /** Cria um perfil comum ou entra em um jogador já cadastrado pelo nome. */
     fun criarPerfil(nome: String) {
         viewModelScope.launch {
             jogadorRepository.entrarOuRegistrar(nome)
@@ -87,7 +83,6 @@ class TelaPerfilViewModel(
         }
     }
 
-    /** Login simulado do administrador (senha conferida no Repository). */
     fun entrarComoAdmin(senha: String) {
         viewModelScope.launch {
             jogadorRepository.entrarComoAdmin(senha)
@@ -96,12 +91,10 @@ class TelaPerfilViewModel(
         }
     }
 
-    /** Alterna as estatísticas entre "todas as partidas" e "só modo avançado". */
     fun alternarEstatisticas() {
         apenasAvancado.value = !apenasAvancado.value
     }
 
-    /** Sai do perfil atual para criar ou escolher outro. */
     fun trocarPerfil() {
         mensagem.value = null
         apenasAvancado.value = false

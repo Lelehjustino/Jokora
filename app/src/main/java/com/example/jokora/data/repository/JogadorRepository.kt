@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 
-/** Erros de domínio que a UI pode mostrar ao usuário*/
 sealed class JokenpoException(mensagem: String, causa: Throwable? = null) : Exception(mensagem, causa) {
     class NomeInvalido : JokenpoException("Informe um nome com pelo menos 2 caracteres.")
     class JogadorJaExiste(nome: String) : JokenpoException("Já existe um jogador chamado \"$nome\".")
@@ -26,7 +25,6 @@ sealed class JokenpoException(mensagem: String, causa: Throwable? = null) : Exce
     class ErroApi(causa: Throwable) : JokenpoException("Não foi possível carregar a frase do dia.", causa)
 }
 
-/** Executa [bloco] convertendo exceções em Result.failure, sem engolir cancelamento de coroutine. */
 internal suspend fun <T> executarComSeguranca(tag: String, bloco: suspend () -> T): Result<T> =
     try {
         Result.success(bloco())
@@ -41,16 +39,13 @@ internal suspend fun <T> executarComSeguranca(tag: String, bloco: suspend () -> 
 
 class JogadorRepository(private val dao: JogadorDao) {
 
-    // ---------- Sessão (jogador logado no app) ----------
     private val _jogadorAtual = MutableStateFlow<JogadorEntity?>(null)
 
-    /** Jogador selecionado no momento; null = ninguém entrou ainda. */
     val jogadorAtual: StateFlow<JogadorEntity?> = _jogadorAtual.asStateFlow()
 
     fun selecionarJogador(jogador: JogadorEntity) { _jogadorAtual.value = jogador }
     fun sair() { _jogadorAtual.value = null }
 
-    // ---------- Consultas (Flow) ----------
     fun listarJogadores(): Flow<List<JogadorEntity>> =
         dao.listarTodos().catch { e ->
             Log.e(TAG, "Erro ao listar jogadores", e)
@@ -75,8 +70,6 @@ class JogadorRepository(private val dao: JogadorDao) {
             emit(null)
         }
 
-    // ---------- Operações ----------
-    /** Registra um jogador novo. Falha se o nome for inválido ou já existir. */
     suspend fun registrarJogador(nome: String, perfil: Perfil = Perfil.JOGADOR): Result<JogadorEntity> =
         executarComSeguranca(TAG) {
             val nomeLimpo = validarNome(nome)
@@ -89,20 +82,14 @@ class JogadorRepository(private val dao: JogadorDao) {
             }
         }
 
-    /** Entra com um jogador existente pelo nome ou cria um novo (perfil JOGADOR) e o seleciona. */
     suspend fun entrarOuRegistrar(nome: String): Result<JogadorEntity> =
         executarComSeguranca(TAG) {
             val nomeLimpo = validarNome(nome)
-            // O administrador só entra pelo login com senha (entrarComoAdmin).
             if (nomeLimpo.equals(NOME_ADMIN, ignoreCase = true)) throw JokenpoException.NomeReservado()
             dao.buscarPorNome(nomeLimpo)
                 ?: registrarJogador(nomeLimpo).getOrThrow()
         }.onSuccess { selecionarJogador(it) }
 
-    /**
-     * Login simulado do administrador: confere a senha e entra com o perfil ADMIN.
-     * Na primeira vez, o usuário administrador é criado no banco.
-     */
     suspend fun entrarComoAdmin(senha: String): Result<JogadorEntity> =
         executarComSeguranca(TAG) {
             if (senha != SENHA_ADMIN) throw JokenpoException.SenhaInvalida()
@@ -115,7 +102,6 @@ class JogadorRepository(private val dao: JogadorDao) {
             }
         }.onSuccess { selecionarJogador(it) }
 
-    /** Update do CRUD: troca o nome de um jogador (usado na TelaAdmin). */
     suspend fun renomearJogador(jogadorId: Long, novoNome: String): Result<Unit> =
         executarComSeguranca(TAG) {
             val jogador = dao.buscarPorId(jogadorId) ?: throw JokenpoException.JogadorNaoEncontrado(jogadorId)
@@ -145,7 +131,6 @@ class JogadorRepository(private val dao: JogadorDao) {
             atualizarJogador(jogador.copy(perfil = perfil)).getOrThrow()
         }
 
-    /** Exclui o jogador e, por CASCADE, todo o histórico dele. */
     suspend fun excluirJogador(jogadorId: Long): Result<Unit> =
         executarComSeguranca(TAG) {
             if (dao.excluirPorId(jogadorId) == 0) throw JokenpoException.JogadorNaoEncontrado(jogadorId)
@@ -161,7 +146,6 @@ class JogadorRepository(private val dao: JogadorDao) {
     companion object {
         private const val TAG = "JogadorRepository"
 
-        /** Usuário e senha do login simulado de administrador. */
         const val NOME_ADMIN = "Administrador"
         const val SENHA_ADMIN = "admin123"
     }

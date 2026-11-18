@@ -19,7 +19,6 @@ data class JogadorEntity(
     val criadoEm: Long = System.currentTimeMillis()
 )
 
-/** Relacionamento 1:N — um jogador e todas as suas partidas. */
 data class JogadorComPartidas(
     @Embedded
     val jogador: JogadorEntity,

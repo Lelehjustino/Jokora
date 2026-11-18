@@ -11,14 +11,9 @@ import kotlinx.coroutines.flow.stateIn
 
 data class SessaoUiState(
     val isAdmin: Boolean = false,
-    /** Abas da Bottom Navigation que o usuário atual pode ver. */
     val abasVisiveis: List<Rota> = Rota.todas.filter { !it.apenasAdmin }
 )
 
-/**
- * Controle de perfil (Admin × Jogador) do app inteiro.
- * Observa o jogador logado e decide quais telas ficam visíveis.
- */
 class SessaoViewModel(
     jogadorRepository: JogadorRepository
 ) : ViewModel() {

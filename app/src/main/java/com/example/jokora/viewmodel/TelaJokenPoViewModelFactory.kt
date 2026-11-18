@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.jokora.data.database.DatabaseProvider
 
-/** Cria o TelaJokenPoViewModel entregando os Repositories que ele precisa. */
 class TelaJokenPoViewModelFactory(
     context: Context
 ) : ViewModelProvider.Factory {

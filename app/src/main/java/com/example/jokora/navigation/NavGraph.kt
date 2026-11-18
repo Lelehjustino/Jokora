@@ -23,13 +23,11 @@ import com.example.jokora.ui.screens.TelaRegras
 import com.example.jokora.viewmodel.SessaoViewModel
 import com.example.jokora.viewmodel.SessaoViewModelFactory
 
-/** Ações de navegação entregues a cada tela. As telas não recebem o NavController. */
 class AcoesNavegacao(
     val navegar: (Rota) -> Unit,
     val voltar: () -> Unit
 )
 
-/** Ponto de encaixe das 6 telas do app. */
 class TelasDoApp(
     val inicial: @Composable (AcoesNavegacao) -> Unit = { nav ->
         TelaInicial(nav = nav)
@@ -56,7 +54,6 @@ class TelasDoApp(
     }
 )
 
-/** Raiz do app: Scaffold + Bottom Navigation + NavHost. Chame em MainActivity.setContent. */
 @Composable
 fun JokoraApp(
     telas: TelasDoApp = TelasDoApp(),
@@ -89,10 +86,7 @@ fun JokenpoNavGraph(
 ) {
     val acoes = remember(navController) {
         AcoesNavegacao(
-            // Todas as telas são abas da barra inferior, então qualquer navegação
-            // (pela barra ou por um botão dentro da tela) usa a mesma regra.
             navegar = { rota -> navController.navegarPelaBarra(rota) },
-            // navigateUp não remove a tela inicial (popBackStack deixaria a tela em branco).
             voltar = { navController.navigateUp() }
         )
     }
@@ -111,7 +105,6 @@ fun JokenpoNavGraph(
             if (isAdmin) {
                 telas.admin(acoes)
             } else {
-                // Proteção: se o admin sair (ou alguém abrir a rota sem permissão), volta ao Perfil.
                 LaunchedEffect(Unit) {
                     navController.navigate(Rota.Perfil.route) {
                         popUpTo(Rota.Admin.route) { inclusive = true }

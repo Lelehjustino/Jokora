@@ -13,37 +13,20 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-/**
- * Tudo o que a TelaJokenPoAva precisa mostrar.
- * A tela só lê este estado; quem altera é o ViewModel.
- */
 data class TelaJokenPoAvaUiState(
-    val opcoes: List<Jogada> = Modalidade.AVANCADO.jogadas, // Pedra, Papel, Tesoura, Lagarto e Spock
+    val opcoes: List<Jogada> = Modalidade.AVANCADO.jogadas,
     val jogadaJogador: Jogada? = null,
     val jogadaComputador: Jogada? = null,
     val resultado: Resultado? = null,
-    val descricao: String = "",          // ex.: "Spock vaporiza Pedra"
+    val descricao: String = "",
     val vitoriasJogador: Int = 0,
     val vitoriasComputador: Int = 0,
     val empates: Int = 0,
     val erro: String? = null
 ) {
-    /** true enquanto o resultado de uma rodada está na tela. */
     val rodadaFinalizada: Boolean get() = resultado != null
 }
 
-/**
- * Regras de negócio do Jokenpô avançado (Pedra, Papel, Tesoura, Lagarto e Spock):
- * recebe a escolha do jogador, sorteia a do computador, compara,
- * atualiza o placar e manda o Repository gravar a partida no Room.
- *
- * Cada jogada vence duas outras (as mesmas regras da aba "Avançado" da TelaRegras):
- *  - Pedra   vence Tesoura e Lagarto
- *  - Papel   vence Pedra e Spock
- *  - Tesoura vence Papel e Lagarto
- *  - Lagarto vence Spock e Papel
- *  - Spock   vence Tesoura e Pedra
- */
 class TelaJokenPoAvaViewModel(
     private val partidaRepository: PartidaRepository,
     private val jogadorRepository: JogadorRepository

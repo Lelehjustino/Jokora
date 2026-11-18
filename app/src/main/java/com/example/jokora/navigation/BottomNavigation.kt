@@ -19,10 +19,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
-/**
- * Barra de navegação inferior padrão (Material 3).
- * [abas] vem do SessaoViewModel: a aba Admin só está na lista para o perfil ADMIN.
- */
 @Composable
 fun BarraNavegacaoInferior(
     navController: NavHostController,
@@ -52,7 +48,6 @@ private fun iconeDa(rota: Rota): ImageVector = when (rota) {
     Rota.Admin -> Icons.Filled.Settings
 }
 
-/** Navegação de abas: não empilha telas repetidas e preserva o estado de cada aba. */
 fun NavHostController.navegarPelaBarra(rota: Rota) {
     navigate(rota.route) {
         popUpTo(graph.findStartDestination().id) { saveState = true }
@@ -61,7 +56,6 @@ fun NavHostController.navegarPelaBarra(rota: Rota) {
     }
 }
 
-/** Navegação comum entre telas (ex.: botão "Ver regras" na TelaInicial). */
 fun NavHostController.navegarPara(rota: Rota) {
     navigate(rota.route) { launchSingleTop = true }
 }

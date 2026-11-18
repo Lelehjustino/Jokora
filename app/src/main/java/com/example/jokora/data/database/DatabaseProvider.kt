@@ -5,9 +5,6 @@ import androidx.room.Room
 import com.example.jokora.data.repository.JogadorRepository
 import com.example.jokora.data.repository.PartidaRepository
 
-/**
- * Ponto único de criação do banco e dos repositories (singletons).
- */
 object DatabaseProvider {
 
     @Volatile private var database: JokenpoDatabase? = null
@@ -21,8 +18,6 @@ object DatabaseProvider {
                 JokenpoDatabase::class.java,
                 JokenpoDatabase.NOME_BANCO
             )
-                // Enquanto o projeto é acadêmico (versão 1), recria o banco se o schema mudar.
-                // Ao alterar entidades: suba a "version" em JokenpoDatabase.
                 .fallbackToDestructiveMigration()
                 .build()
                 .also { database = it }

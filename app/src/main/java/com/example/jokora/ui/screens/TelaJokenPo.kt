@@ -31,7 +31,6 @@ import com.example.jokora.ui.components.ResultadoRodada
 import com.example.jokora.viewmodel.TelaJokenPoViewModel
 import com.example.jokora.viewmodel.TelaJokenPoViewModelFactory
 
-/** Tela do Jokenpô tradicional: Pedra, Papel e Tesoura contra o computador. */
 @Composable
 fun TelaJokenPo(
     nav: AcoesNavegacao,
@@ -51,7 +50,6 @@ fun TelaJokenPo(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // 1. Título
         Text(
             text = "Jokenpô tradicional",
             style = MaterialTheme.typography.headlineMedium,
@@ -64,14 +62,12 @@ fun TelaJokenPo(
             textAlign = TextAlign.Center
         )
 
-        // 2. Placar
         PlacarJogo(
             vitoriasJogador = uiState.vitoriasJogador,
             empates = uiState.empates,
             vitoriasComputador = uiState.vitoriasComputador
         )
 
-        // 3 e 4. Área de escolha com os três botões grandes
         Text(
             text = if (uiState.rodadaFinalizada) "Sua escolha" else "Faça sua escolha",
             style = MaterialTheme.typography.titleMedium,
@@ -92,7 +88,6 @@ fun TelaJokenPo(
             }
         }
 
-        // 5 e 6. Escolha do computador e resultado da rodada
         val jogadaJogador = uiState.jogadaJogador
         val jogadaComputador = uiState.jogadaComputador
         val resultado = uiState.resultado
@@ -121,7 +116,6 @@ fun TelaJokenPo(
             )
         }
 
-        // 7. Jogar novamente
         Button(
             onClick = { viewModel.jogarNovamente() },
             enabled = uiState.rodadaFinalizada,
@@ -130,7 +124,6 @@ fun TelaJokenPo(
             Text("Jogar novamente")
         }
 
-        // 8. Reiniciar pontuação
         OutlinedButton(
             onClick = { viewModel.reiniciarPontuacao() },
             modifier = Modifier.fillMaxWidth()

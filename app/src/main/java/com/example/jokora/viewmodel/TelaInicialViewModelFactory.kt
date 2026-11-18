@@ -7,7 +7,6 @@ import com.example.jokora.data.database.DatabaseProvider
 import com.example.jokora.data.remote.RetrofitClient
 import com.example.jokora.data.repository.FraseRepository
 
-/** Cria o TelaInicialViewModel com o repository do banco (Room) e o da API (Retrofit). */
 class TelaInicialViewModelFactory(
     context: Context
 ) : ViewModelProvider.Factory {

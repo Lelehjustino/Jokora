@@ -12,11 +12,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PartidaDao {
 
-    // ---------- Create ----------
     @Insert
     suspend fun inserir(partida: PartidaEntity): Long
 
-    // ---------- Read ----------
     @Query("SELECT * FROM partidas ORDER BY dataHora DESC")
     fun listarTodas(): Flow<List<PartidaEntity>>
 
@@ -32,11 +30,9 @@ interface PartidaDao {
     @Query("SELECT * FROM partidas WHERE id = :id")
     suspend fun buscarPorId(id: Long): PartidaEntity?
 
-    // ---------- Update ----------
     @Update
     suspend fun atualizar(partida: PartidaEntity): Int
 
-    // ---------- Delete ----------
     @Delete
     suspend fun excluir(partida: PartidaEntity): Int
 

@@ -28,7 +28,6 @@ abstract class JokenpoDatabase : RoomDatabase() {
     }
 }
 
-/** Salva os enums como texto (nome da constante), legível e estável no SQLite. */
 class JokenpoConverters {
     @TypeConverter fun jogadaParaTexto(valor: Jogada): String = valor.name
     @TypeConverter fun textoParaJogada(valor: String): Jogada = Jogada.valueOf(valor)

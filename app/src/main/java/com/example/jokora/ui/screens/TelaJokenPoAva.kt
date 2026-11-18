@@ -32,7 +32,6 @@ import com.example.jokora.ui.components.ResultadoRodada
 import com.example.jokora.viewmodel.TelaJokenPoAvaViewModel
 import com.example.jokora.viewmodel.TelaJokenPoAvaViewModelFactory
 
-/** Tela do Jokenpô avançado: Pedra, Papel, Tesoura, Lagarto e Spock contra o computador. */
 @Composable
 fun TelaJokenPoAva(
     nav: AcoesNavegacao,

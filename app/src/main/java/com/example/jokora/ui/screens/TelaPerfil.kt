@@ -52,10 +52,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-/**
- * Aba Perfil: cria/troca o perfil, faz o login de administrador
- * e mostra as estatísticas e o histórico de partidas (LazyColumn).
- */
 @Composable
 fun TelaPerfil(
     nav: AcoesNavegacao,
@@ -104,7 +100,6 @@ fun TelaPerfil(
                 CabecalhoPerfil(nome = uiState.nome, tipoPerfil = uiState.tipoPerfil)
             }
 
-            // Controle de perfil: atalho para a área restrita só aparece para ADMIN
             if (uiState.isAdmin) {
                 item {
                     Button(
@@ -166,7 +161,6 @@ fun TelaPerfil(
     }
 }
 
-/** Formulário para criar/selecionar um jogador pelo nome ou entrar como administrador. */
 @Composable
 private fun CriarPerfil(
     erro: String?,
@@ -263,7 +257,6 @@ private fun CriarPerfil(
     }
 }
 
-/** Avatar, nome e tipo de perfil (Jogador ou Administrador). */
 @Composable
 private fun CabecalhoPerfil(nome: String, tipoPerfil: String) {
     Column(
@@ -299,10 +292,6 @@ private fun CabecalhoPerfil(nome: String, tipoPerfil: String) {
     }
 }
 
-/**
- * Exibe as estatísticas gerais ou somente as partidas do modo avançado.
- * O filtro é feito no TelaPerfilViewModel; a tela só chama [onAlternarModo].
- */
 @Composable
 private fun Estatisticas(
     placar: Placar,
@@ -358,7 +347,6 @@ private fun Estatisticas(
     }
 }
 
-/** Uma linha do histórico (item da LazyColumn). */
 @Composable
 private fun LinhaPartida(partida: PartidaEntity) {
     val formatoData = SimpleDateFormat("dd/MM/yyyy 'às' HH:mm", Locale("pt", "BR"))

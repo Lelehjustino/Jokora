@@ -42,10 +42,6 @@ import com.example.jokora.viewmodel.JogadorResumo
 import com.example.jokora.viewmodel.TelaAdminViewModel
 import com.example.jokora.viewmodel.TelaAdminViewModelFactory
 
-/**
- * Área do administrador (só aparece para o perfil ADMIN):
- * ranking de jogadores numa LazyColumn, busca por nome, renomear e excluir.
- */
 @Composable
 fun TelaAdmin(
     nav: AcoesNavegacao,
@@ -57,7 +53,6 @@ fun TelaAdmin(
     )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // Jogador selecionado para cada diálogo (null = diálogo fechado)
     var jogadorParaRenomear by remember { mutableStateOf<JogadorResumo?>(null) }
     var jogadorParaExcluir by remember { mutableStateOf<JogadorResumo?>(null) }
     var jogadorParaZerar by remember { mutableStateOf<JogadorResumo?>(null) }
@@ -170,7 +165,6 @@ fun TelaAdmin(
     }
 }
 
-/** Um item do ranking: posição, nome, vitórias e as ações do administrador. */
 @Composable
 private fun CartaoJogador(
     posicao: Int,

@@ -17,7 +17,6 @@ data class TelaInicialUiState(
     val perfil: String = "Não identificado",
     val possuiJogador: Boolean = false,
     val isAdmin: Boolean = false,
-    // Frase do dia (API externa via Retrofit)
     val frase: String? = null,
     val carregandoFrase: Boolean = false,
     val erroFrase: String? = null
@@ -28,7 +27,6 @@ class TelaInicialViewModel(
     private val fraseRepository: FraseRepository
 ) : ViewModel() {
 
-    /** Estado interno da consulta à API. */
     private data class EstadoFrase(
         val texto: String? = null,
         val carregando: Boolean = false,
@@ -59,7 +57,6 @@ class TelaInicialViewModel(
         carregarFrase()
     }
 
-    /** Busca uma nova frase na API. Falhas chegam como Result.failure (tratadas no Repository). */
     fun carregarFrase() {
         viewModelScope.launch {
             estadoFrase.update { it.copy(carregando = true, erro = null) }

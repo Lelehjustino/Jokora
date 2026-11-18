@@ -25,12 +25,6 @@ import androidx.compose.ui.unit.sp
 import com.example.jokora.model.Jogada
 import com.example.jokora.model.Resultado
 
-/**
- * Componentes visuais das telas de jogo.
- * Servem tanto para o Jokenpô tradicional quanto para o avançado.
- */
-
-/** Emoji que representa cada jogada. */
 fun Jogada.emoji(): String = when (this) {
     Jogada.PEDRA -> "✊"
     Jogada.PAPEL -> "✋"
@@ -39,7 +33,6 @@ fun Jogada.emoji(): String = when (this) {
     Jogada.SPOCK -> "🖖"
 }
 
-/** Botão grande de escolha de jogada (emoji + nome). */
 @Composable
 fun BotaoJogada(
     jogada: Jogada,
@@ -74,7 +67,6 @@ fun BotaoJogada(
     }
 }
 
-/** Placar com três números: vitórias do jogador, empates e vitórias do computador. */
 @Composable
 fun PlacarJogo(
     vitoriasJogador: Int,
@@ -113,7 +105,6 @@ private fun ItemPlacar(valor: Int, legenda: String) {
     }
 }
 
-/** Card "Resultado da rodada": as duas jogadas lado a lado e o selo do resultado. */
 @Composable
 fun ResultadoRodada(
     jogadaJogador: Jogada,
@@ -173,7 +164,6 @@ private fun LadoDaJogada(titulo: String, jogada: Jogada) {
     }
 }
 
-/** Selo colorido: "Você venceu!", "Você perdeu!" ou "Empate!". */
 @Composable
 private fun SeloResultado(resultado: Resultado) {
     val (texto, fundo: Color, cor: Color) = when (resultado) {

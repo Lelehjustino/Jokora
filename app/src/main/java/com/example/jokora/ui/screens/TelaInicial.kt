@@ -112,7 +112,6 @@ fun TelaInicial(
                 }
             }
 
-            // Frase do dia: vem da API externa (Retrofit) pelo TelaInicialViewModel
             item {
                 FraseDoDia(
                     frase = uiState.frase,
@@ -232,7 +231,6 @@ fun TelaInicial(
                 }
             }
 
-            // Controle de perfil: o botão só existe para o administrador
             if (uiState.isAdmin) {
                 item {
                     Button(
@@ -263,7 +261,6 @@ fun TelaInicial(
     }
 }
 
-/** Cartão com a frase do dia buscada na API (com estados de carregando e erro). */
 @Composable
 private fun FraseDoDia(
     frase: String?,
